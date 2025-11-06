@@ -1,3 +1,5 @@
+import { Login } from '@/components/Login'
+
 export default function LoginPages() {
-  return <strong>Login</strong>
+  return <Login />
 }
