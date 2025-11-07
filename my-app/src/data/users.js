@@ -32,7 +32,7 @@ export async function getUserInfoById(userId) {
   return { username: user.username }
 }
 
-export async function getUserIdByToken(token) {
+export function getUserIdByToken(token) {
   if (!token) return null
   const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
   return decodedToken.sub
