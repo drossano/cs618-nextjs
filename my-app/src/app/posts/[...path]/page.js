@@ -4,7 +4,7 @@ import { getPostById } from '@/data/posts'
 import { initDatabase } from '@/db/init'
 
 export async function generateMetadata({ params }) {
-  const id = params.id
+  const [id] = params.path
   const post = await getPostById(id)
   if (!post) notFound()
   return {
@@ -14,7 +14,8 @@ export async function generateMetadata({ params }) {
 }
 export default async function ViewPostPage({ params }) {
   await initDatabase()
-  const post = await getPostById(params.id)
+  const [id] = params.path
+  const post = await getPostById(id)
   if (!post) notFound()
   return (
     <FullPost
