@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createPost } from '@/data/posts'
@@ -15,6 +16,7 @@ export default function CreatePostPage() {
       title: formData.get('title'),
       contents: formData.get('contents'),
     })
+    revalidateTag('posts')
     redirect(`/posts/${post._id}`)
   }
   if (!token?.value) {
