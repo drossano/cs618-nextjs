@@ -2,7 +2,7 @@ import 'server-only'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { User } from '@/db/models'
-
+import { unstable_cache as cache } from 'next/cache'
 export async function createUser({ username, password }) {
   const hashedPassword = await bcrypt.hash(password, 10)
   const user = new User({ username, password: hashedPassword })
@@ -23,14 +23,16 @@ export async function loginUser({ username, password }) {
   })
   return token
 }
-
-export async function getUserInfoById(userId) {
-  const user = await User.findById(userId)
-  if (!user) {
-    throw new Error('user not found!')
-  }
-  return { username: user.username }
-}
+export const getUserInfoById = cache(
+  async function getUserInfoById(userId) {
+    const user = await User.findById(userId)
+    if (!user) {
+      throw new Error('user not found!')
+    }
+    return { username: user.username }
+  },
+  ['users', 'getUserInfoById'],
+)
 
 export function getUserIdByToken(token) {
   if (!token) return null
