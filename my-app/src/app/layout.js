@@ -1,3 +1,4 @@
+import { Inter } from 'next/font/google'
 import { cookies } from 'next/headers'
 import { getUserInfoByToken } from '@/data/users'
 
@@ -14,11 +15,16 @@ async function logoutAction() {
   cookies().delete('AUTH_TOKEN')
 }
 
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+})
+
 export default async function RootLayout({ children }) {
   const token = cookies().get('AUTH_TOKEN')
   const user = await getUserInfoByToken(token?.value)
   return (
-    <html lang='en'>
+    <html lang='en' className={inter.className}>
       <body>
         <nav>
           <Navigation username={user?.username} logoutAction={logoutAction} />
